@@ -62,52 +62,45 @@ def _make_timedelta(value):
 
 
 class Flask(Scaffold):
-    """The flask object implements a WSGI application and acts as the central
-    object.  It is passed the name of the module or package of the
-    application.  Once it is created it will act as a central registry for
-    the view functions, the URL rules, template configuration and much more.
+    """flask类实现一个WSGI应用并充当其中心类。它传递给应用的module或者package。
+    一旦创建成功，他将会充当中央注册表的视图功能、URL规则、模板配置等
 
-    The name of the package is used to resolve resources from inside the
-    package or the folder the module is contained in depending on if the
-    package parameter resolves to an actual python package (a folder with
-    an :file:`__init__.py` file inside) or a standard module (just a ``.py`` file).
-
-    For more information about resource loading, see :func:`open_resource`.
-
-    Usually you create a :class:`Flask` instance in your main module or
-    in the :file:`__init__.py` file of your package like this::
+    程序包的名称用于从内部或者模块所在的文件夹解析资源，这取决于包参数是否解析为
+    一个实际的python包(一个带有:file: '摔打的文件夹)。或者是一个标准模块(只是一
+    个' ')。py“文件)。
+    
+    
+    关于更多资源加载信息，参考func:`opensource`
+    
+    通常您可以在main模块里创建一个flask实例，或者在软件包的文件夹下创建
+    init.py文件用这种格式:
+    
 
         from flask import Flask
         app = Flask(__name__)
 
-    .. admonition:: About the First Parameter
+    .. 警告:关于第一个参数
 
-        The idea of the first parameter is to give Flask an idea of what
-        belongs to your application.  This name is used to find resources
-        on the filesystem, can be used by extensions to improve debugging
-        information and a lot more.
-
-        So it's important what you provide there.  If you are using a single
-        module, `__name__` is always the correct value.  If you however are
-        using a package, it's usually recommended to hardcode the name of
-        your package there.
-
-        For example if your application is defined in :file:`yourapplication/app.py`
-        you should create it with one of the two versions below::
+        第一个参数的意思是让flask了解什么属于你的应用。此名称用于寻找文件系统
+        上的资源，也能用来通过拓展提高调试信息或者更多功能。
+        
+        因此，您在此处提供的内容非常重要。如果您使用单个模块，__name__总是正确的
+        值。但是如你使用的是包，那么通常是推荐将包名硬解码到名称。
+     
+        举例来说如果您的应用是定义为文件：yourapplication/app.py,您应该以一下两
+        种版本之一创建：  
 
             app = Flask('yourapplication')
             app = Flask(__name__.split('.')[0])
-
-        Why is that?  The application will work even with `__name__`, thanks
-        to how resources are looked up.  However it will make debugging more
-        painful.  Certain extensions can make assumptions based on the
-        import name of your application.  For example the Flask-SQLAlchemy
-        extension will look for the code in your application that triggered
-        an SQL query in debug mode.  If the import name is not properly set
-        up, that debugging information is lost.  (For example it would only
-        pick up SQL queries in `yourapplication.app` and not
-        `yourapplication.views.frontend`)
-
+            
+        为什么会是这样的?由于资源的查找方式，即便是__name__,应用也可以运行。然而
+        这样会使调试更痛苦。某些拓展可以（假设）基于您的应用程序的导入名称。比如
+        Flask-SQLAlchemy拓展将在您的应用程序中查找在调试模式下触发SQL查询的代码。
+        如果导入名称设置的不正确，调试信息就会丢失。（举例来说它将只会挑选
+        yourapplication.app中的sql查询而不会在yourapplication.views.frontend挑
+        选)
+       
+       版本添加
     .. versionadded:: 0.7
        The `static_url_path`, `static_folder`, and `template_folder`
        parameters were added.
@@ -127,14 +120,13 @@ class Flask(Scaffold):
        matching needs to be enabled manually now. Setting
        :data:`SERVER_NAME` does not implicitly enable it.
 
-    :param import_name: the name of the application package
-    :param static_url_path: can be used to specify a different path for the
-                            static files on the web.  Defaults to the name
-                            of the `static_folder` folder.
-    :param static_folder: The folder with static files that is served at
-        ``static_url_path``. Relative to the application ``root_path``
-        or an absolute path. Defaults to ``'static'``.
-    :param static_host: the host to use when adding the static route.
+    :param import_name: 应用程序包的名称
+    :param static_url_path: 可以用来指定网络上存放静态文件的不同路径。默认为名
+                            称static_floder的文件夹
+    :param static_folder: 包含静态文件的文件夹，位于static_url_path.相对与应用
+                          程序的root_path,或绝对路径.默认为static
+    :param static_host: 添加静态路由时要使用的主机.默认为None.在配置了
+                        static_folder后，使用host_matching=True之后必需。
         Defaults to None. Required when using ``host_matching=True``
         with a ``static_folder`` configured.
     :param host_matching: set ``url_map.host_matching`` attribute.
